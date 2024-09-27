@@ -1,25 +1,8 @@
-[project]
-name = "z3city"
-authors = [
-    { name = "Jonatan Wiik" },
-]
-version = "0.0.0"
-dependencies = [
-    "z3-solver>=4.13.0.0,<5",
-]
-requires-python = ">= 3.12"
-
-[tool.pip-tools]
-emit-index-url = false
-generate-hashes = false
-allow-unsafe = true
-strip-extras = true
-
 [tool.poetry]
 name = "z3city"
 version = "0.1.0"
 description = "Electricity price optimization with Z3 SMT solver"
-authors = ["Jonatan Wiik <435078+jwiik@users.noreply.github.com>"]
+authors = ["jwiik"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
