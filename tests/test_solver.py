@@ -30,3 +30,4 @@ def test_solver():
     ]
     schedule = solver.solve(prices, 10, 2)
     assert len(schedule) == 24
+    assert len([b for b in schedule if b]) >= 10
