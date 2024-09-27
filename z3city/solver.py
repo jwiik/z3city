@@ -6,7 +6,7 @@ def avg(lst: list[float | int]) -> float:
 
 
 def _extract_schedule(model: z3.ModelRef, hours: list[z3.Int]) -> list[bool]:
-    return [bool(model[h].as_long()) for h in enumerate(hours)]
+    return [bool(model[h].as_long()) for h in hours]
 
 
 def _compute_avg_price(result: list[bool], prices: list[float]) -> float:
@@ -15,10 +15,7 @@ def _compute_avg_price(result: list[bool], prices: list[float]) -> float:
 
 
 def solve(
-    prices: list[float],
-    min_hours: int,
-    max_gap: int,
-    fixed_base_price: int = 7.5
+    prices: list[float], min_hours: int, max_gap: int, fixed_base_price: int = 7.5
 ) -> list[bool]:
     if len(prices) != 24:
         raise ValueError("prices must have 24 elements")
@@ -52,11 +49,12 @@ def solve(
         solver.add_soft(h == 0, str(weight))
 
     if solver.check() == z3.sat:
-        schedule = _extract_schedule(solver.model(), hours)
+        model = solver.model()
+        schedule = _extract_schedule(model, hours)
         avg_price = _compute_avg_price(schedule, prices)
         solver.pop()
 
-        for (_, r), h in zip(schedule, hours):
+        for r, h in zip(schedule, hours):
             if r:
                 solver.add(h == 1)
 
@@ -68,4 +66,3 @@ def solve(
             schedule = _extract_schedule(solver.model(), hours)
 
     return schedule
-

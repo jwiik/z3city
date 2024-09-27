@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append("")
+from z3city import solver
 
 price_data = [
     {
@@ -131,4 +131,4 @@ print(hourly_prices)
 # hourly_prices = [price["price"] for price in reversed(price_data)]
 # hourly_prices = [10 for _ in range(24)]
 
-# solve(hourly_prices, 8, 6)
+solver.solve(hourly_prices, 8, 6)
