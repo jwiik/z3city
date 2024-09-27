@@ -1,7 +1,3 @@
-[build-system]
-requires = ["setuptools >= 61.0"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "z3city"
 authors = [
@@ -18,6 +14,27 @@ emit-index-url = false
 generate-hashes = false
 allow-unsafe = true
 strip-extras = true
+
+[tool.poetry]
+name = "z3city"
+version = "0.1.0"
+description = "Electricity price optimization with Z3 SMT solver"
+authors = ["Jonatan Wiik <435078+jwiik@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+z3-solver = ">=4.13.0.0,<5"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "*"
+isort = "*"
+black = "*"
+pytest = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
 profile = "black"
