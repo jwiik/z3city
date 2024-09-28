@@ -25,6 +25,7 @@ def solve(
     solver = z3.Optimize()
     # Each hour is denoted by a variable, each have value 0 or 1
     hours = [z3.Int(f"h{i}") for i in range(24)]
+    price_consts = [z3.RealVal(p) for p in prices]
     for h in hours:
         solver.add(z3.Or(h == 0, h == 1))
 
@@ -41,6 +42,16 @@ def solve(
         solver.add(
             z3.Implies(hours[i] == 1, z3.Or(hours[i - 1] == 1, hours[i + 1] == 1))
         )
+    solver.add(z3.Implies(hours[-1] == 1, hours[-2] == 1))
+
+    # Ensure that all on-periods are at least 2 hours long
+    for i in range(1, 24):
+        solver.add(
+            z3.Implies(
+                z3.And(hours[i] == 1, hours[i - 1] == 0),
+                price_consts[i] < price_consts[i - 1],
+            )
+        )
 
     solver.push()
     # For each hour, add a soft assert where the weight is the price
@@ -52,6 +63,7 @@ def solve(
         model = solver.model()
         schedule = _extract_schedule(model, hours)
         avg_price = _compute_avg_price(schedule, prices)
+        print(avg_price)
         solver.pop()
 
         for r, h in zip(schedule, hours):
